@@ -16,7 +16,7 @@ const NavDropDown = ({ id, dropDownItemList }) => {
         isDropdownHide && showItemId !== id
           ? style.dropdown
           : showItemId === id
-          ? style.dropdownFlex + " " + style.dropdown
+          ? style.dropdownFlex + " " + style.dropdown + " " + "shadow-2xl bg-yellow-50"
           : style.dropdown
       }
     >
@@ -30,8 +30,18 @@ const NavDropDown = ({ id, dropDownItemList }) => {
               alignItems: "center",
             }}
             key={index}
+            className="hover:opacity-50"
           >
-            {icon} <span style={{ marginLeft: "6px" }}>{contents[index]}</span>
+            {icon}{" "}
+            <span style={{ marginLeft: "6px" }}>
+              {contents[index] === "Postman" ? (
+                <a href="https://www.postman.com/" target="_blank">
+                  {contents[index]}
+                </a>
+              ) : (
+                contents[index]
+              )}
+            </span>
           </div>
         );
       })}

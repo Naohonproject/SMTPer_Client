@@ -1,9 +1,16 @@
 import { FiSend } from "react-icons/fi";
 import { AiOutlineMenu } from "react-icons/ai";
+import { useContext } from "react";
+import { NavBarContext } from "../../../context/NavBarContext";
 
 const FormBody = () => {
+  const { isMiniForm } = useContext(NavBarContext);
   return (
-    <div className="grid grid-cols-12 md:grid-cols-4 h-max relative">
+    <div
+      className={
+        "grid grid-cols-12 md:grid-cols-4 h-max relative" + " " + (isMiniForm ? " " : "-mt-[125px]")
+      }
+    >
       <div className="md:col-span-1 col-span-1 sm:col-span-1 bg-gray-300 ">
         <div className="flex md:flex-row flex-col items-center justify-between md:justify-start h-20 md:h-10 p-1 md:p-3 md:bg-gray-700 text-white">
           <AiOutlineMenu className="block md:hidden text-center h-10 text-gray-900" />
@@ -112,8 +119,23 @@ const FormBody = () => {
             <span className="text-green-500">account</span> or{" "}
             <span className="text-green-500">account@foo.com</span>)
           </p>
+          <p className="p-3 text-gray-400">
+            required if 'Use authentication' is checked (ex:{" "}
+            <span className="text-green-500">account</span> or{" "}
+            <span className="text-green-500">account@foo.com</span>)
+          </p>{" "}
+          <p className="p-3 text-gray-400">
+            required if 'Use authentication' is checked (ex:{" "}
+            <span className="text-green-500">account</span> or{" "}
+            <span className="text-green-500">account@foo.com</span>)
+          </p>{" "}
+          <p className="p-3 text-gray-400">
+            required if 'Use authentication' is checked (ex:{" "}
+            <span className="text-green-500">account</span> or{" "}
+            <span className="text-green-500">account@foo.com</span>)
+          </p>
         </div>
-        <div className="text-gray-600 m-3">
+        <div className="text-gray-600 mx-3 my-1">
           <p>Test Your Mail Server</p>
         </div>
       </div>

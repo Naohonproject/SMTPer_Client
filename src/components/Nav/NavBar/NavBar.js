@@ -26,7 +26,7 @@ const NavBar = () => {
   ];
   return (
     <div className={style.nanoMenu}>
-      <NavbarBrand p={"16px"} />
+      <NavbarBrand p={"16px"} haveBackGround />
       <NavItem
         id={1}
         dropDown={<NavDropDown dropDownItemList={dropDownContainer[0]} id={1} />}
