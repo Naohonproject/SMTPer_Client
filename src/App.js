@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext } from "react";
+
+import "./App.css";
+import NavBar from "./components/Nav/NavBar/NavBar";
+import Title from "./components/Slogan/Slogan";
+import Footer from "./components/Footer/Footer";
+import MainForm from "./components/MainForm/MainForm";
+import { NavBarContext } from "./context/NavBarContext";
 
 function App() {
+  const { setIsDropdownHide, setShowItemId } = useContext(NavBarContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      onClick={() => {
+        setIsDropdownHide((prev) => !prev);
+        setShowItemId(0);
+      }}
+      className="App"
+    >
+      <NavBar />
+      <Title />
+      <MainForm />
+      <Footer />
     </div>
   );
 }
