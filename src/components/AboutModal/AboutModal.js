@@ -11,7 +11,13 @@ const Modal = ({ headerContent, mainContent }) => {
     <>
       <div className={styles.darkBG} onClick={() => setModalOpen(null)} />
       <div className={styles.centered}>
-        <div className={styles.modal + " " + "w-300px md:w-[650px] lg:w-[800px] min-w-min"}>
+        <div
+          className={
+            styles.modal +
+            " " +
+            "w-300px md:w-[650px] lg:w-[800px] min-w-min h-[600px] md:h-[400px] mt-[300px] md:mt-0"
+          }
+        >
           <div className={styles.modalHeader}>
             <div className={styles.heading + " " + "flex items-center content-center"}>
               <div className="flex grow items-center relative">
@@ -25,9 +31,12 @@ const Modal = ({ headerContent, mainContent }) => {
           <button className={styles.closeBtn} onClick={() => setModalOpen(null)}>
             <RiCloseLine style={{ marginBottom: "-3px" }} />
           </button>
-          <div className={styles.modalContent}>{mainContent}</div>
+          <div className={styles.modalContent + " " + "text-[16px] md:text-lg"}>{mainContent}</div>
           <div className={styles.modalActions + " " + "border-t-2 border-t-slate-500"}>
             <div className={styles.actionsContainer}>
+              <p className="ml-5 text-black">
+                For more information, contact us at team (at) nanogenesis.xyz
+              </p>
               <button className={styles.cancelBtn} onClick={() => setModalOpen(null)}>
                 Close
               </button>

@@ -4,21 +4,23 @@ import { BsChevronDown } from "react-icons/bs";
 import style from "./style.module.css";
 import { NavBarContext } from "../../../context/NavBarContext";
 
-const NavItem = ({ content, first, dropDown, id }) => {
+const NavItem = ({ content, first, dropDown, id, res }) => {
   const { setShowItemId } = useContext(NavBarContext);
-
+  console.log(res);
   const handleOnClick = (e) => {
     e.stopPropagation();
     setShowItemId(id);
   };
   return (
-    <div className={style.navItem}>
-      <div onClick={handleOnClick} className={style.navAbove}>
-        {first}
-        {content}
-        <BsChevronDown />
+    <div className={res}>
+      <div className={style.navItem}>
+        <div onClick={handleOnClick} className={style.navAbove}>
+          {first}
+          {content}
+          <BsChevronDown />
+        </div>
+        {dropDown}
       </div>
-      {dropDown}
     </div>
   );
 };

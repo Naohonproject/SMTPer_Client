@@ -6,7 +6,14 @@ import { NavBarContext } from "../../../context/NavBarContext";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 const NavDropDown = ({ id, dropDownItemList }) => {
-  const { isDropdownHide, showItemId, setModalOpen } = useContext(NavBarContext);
+  const {
+    isDropdownHide,
+    setIsDropdownHide,
+    showItemId,
+    setModalOpen,
+    setIsMainFormShow,
+    setShowItemId,
+  } = useContext(NavBarContext);
   const { setTheme, theme } = useContext(ThemeContext);
 
   const { icons, contents } = dropDownItemList;
@@ -14,6 +21,8 @@ const NavDropDown = ({ id, dropDownItemList }) => {
 
   const handleOnClick = (e) => {
     const content = e.target.getAttribute("data-name");
+    setIsDropdownHide(true);
+    setShowItemId(0);
     if (content == "Dark Mode") {
       setTheme("dark");
     } else if (content === "Light Mode") {
@@ -22,8 +31,10 @@ const NavDropDown = ({ id, dropDownItemList }) => {
       setTheme("auto");
     } else if (content === "Disclaimer") {
       setModalOpen("disclaimer");
+      setIsMainFormShow(false);
     } else {
       setModalOpen("about");
+      setIsMainFormShow(false);
     }
   };
 

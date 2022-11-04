@@ -26,12 +26,14 @@ const NavBar = () => {
     <div onClick={(e) => e.stopPropagation()} className={style.nanoMenu}>
       <NavbarBrand p={"16px"} haveBackGround />
       <NavItem
+        res="hidden myMdScreen:block"
         id={1}
         dropDown={<NavDropDown dropDownItemList={dropDownContainer[0]} id={1} />}
         content="More App"
         first={<FiFeather />}
       />
       <NavItem
+        res="hidden myMdScreen:block"
         id={2}
         dropDown={<NavDropDown dropDownItemList={dropDownContainer[1]} id={2} />}
         content="Themes"

@@ -12,8 +12,6 @@ const FormHeader = () => {
   const { theme } = useContext(ThemeContext);
   const { setIsMainFormShow, isMiniForm, setIsMiniForm } = useContext(NavBarContext);
 
-  console.log(theme);
-
   const handleOnClose = (e) => {
     e.preventDefault();
     e.stopPropagation();

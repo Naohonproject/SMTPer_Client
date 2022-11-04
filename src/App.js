@@ -8,6 +8,8 @@ import Footer from "./components/Footer/Footer";
 import MainForm from "./components/MainForm/MainForm";
 import { NavBarContext } from "./context/NavBarContext";
 import AboutModal from "./components/AboutModal/AboutModal";
+import About from "./components/AboutModal/About/About";
+import Disclaimer from "./components/AboutModal/Disclaimer/Disclaimer";
 
 function App() {
   const { ModalOpen } = useContext(NavBarContext);
@@ -22,8 +24,10 @@ function App() {
     >
       <NavBar />
       <Title />
-      {ModalOpen === "disclaimer" && <AboutModal headerContent="Disclaimer" />}
-      {ModalOpen === "about" && <AboutModal headerContent="About" />}
+      {ModalOpen === "disclaimer" && (
+        <AboutModal mainContent={<Disclaimer />} headerContent="Disclaimer" />
+      )}
+      {ModalOpen === "about" && <AboutModal mainContent={<About />} headerContent="About" />}
       <MainForm />
       <Footer />
     </div>
