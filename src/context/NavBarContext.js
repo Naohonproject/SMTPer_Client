@@ -7,6 +7,7 @@ const NavBarContextProvider = ({ children }) => {
   const [showItemId, setShowItemId] = useState(0);
   const [isMainFormShow, setIsMainFormShow] = useState(true);
   const [isMiniForm, setIsMiniForm] = useState(true);
+  const [ModalOpen, setModalOpen] = useState(null);
 
   const NavBarContextData = {
     isDropdownHide,
@@ -17,6 +18,8 @@ const NavBarContextProvider = ({ children }) => {
     setIsMainFormShow,
     isMiniForm,
     setIsMiniForm,
+    ModalOpen,
+    setModalOpen,
   };
   return <NavBarContext.Provider value={NavBarContextData}>{children}</NavBarContext.Provider>;
 };

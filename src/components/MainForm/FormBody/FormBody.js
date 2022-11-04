@@ -1,24 +1,48 @@
 import { FiSend } from "react-icons/fi";
 import { AiOutlineMenu } from "react-icons/ai";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+
 import { NavBarContext } from "../../../context/NavBarContext";
+import { ThemeContext } from "../../../context/ThemeContext";
+
+import "./FormBody.css";
 
 const FormBody = () => {
   const { isMiniForm } = useContext(NavBarContext);
+  const { theme } = useContext(ThemeContext);
+  const [isUseAuthentication, setIsUseAuthentication] = useState(false);
   return (
     <div
       className={
-        "grid grid-cols-12 md:grid-cols-4 h-max relative" + " " + (isMiniForm ? " " : "-mt-[125px]")
+        "grid grid-cols-12 md:grid-cols-4 h-max relative" +
+        " " +
+        (isMiniForm ? " " : "-mt-[4px] toBottom")
       }
     >
-      <div className="md:col-span-1 col-span-1 sm:col-span-1 bg-gray-300 ">
-        <div className="flex md:flex-row flex-col items-center justify-between md:justify-start h-20 md:h-10 p-1 md:p-3 md:bg-gray-700 text-white">
+      <div
+        className={
+          "md:col-span-1 col-span-1 bg-gray-300" + " " + (theme === "dark" ? "!bg-zinc-600" : " ")
+        }
+      >
+        <div
+          className={
+            "flex md:flex-row flex-col items-center justify-between md:justify-start h-20 md:h-10 p-1 md:p-3 md:bg-gray-700 text-white" +
+            " " +
+            (theme === "dark" ? "!bg-zinc-800" : " ")
+          }
+        >
           <AiOutlineMenu className="block md:hidden text-center h-10 text-gray-900" />
           <span className="hidden md:block">Test & Check</span>
           <FiSend className="text-center md:ml-auto text-red-500 sm:text-white " />
         </div>
       </div>
-      <div className="bg-yellow-50 p-3 col-span-10 md:col-span-3  grid grid-cols-1 lg:grid-cols-2  gap-2">
+      <div
+        className={
+          "bg-yellow-50 p-3 col-span-11 md:col-span-3  grid grid-cols-1 lg:grid-cols-2 gap-1 border-t-2 border-l-2 border-l-gray-300 border-t-gray-300" +
+          " " +
+          (theme === "dark" ? "!bg-zinc-600" : " ")
+        }
+      >
         <div>
           <div className="col-span-1 p-3">
             <label for="host" className="text-red-600">
@@ -28,7 +52,11 @@ const FormBody = () => {
               placeholder="required"
               type="text"
               id="host"
-              className="border-b-2 w-full border-gray-400 bg-yellow-50"
+              className={
+                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                " " +
+                (theme === "dark" ? "bg-zinc-600" : "")
+              }
               required
             />
           </div>
@@ -40,7 +68,11 @@ const FormBody = () => {
               placeholder="required"
               type="text"
               id="host"
-              className="border-b-2 w-full border-gray-400 bg-yellow-50 border-half"
+              className={
+                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                " " +
+                (theme === "dark" ? "bg-zinc-600" : "")
+              }
               required
             />
           </div>
@@ -49,7 +81,11 @@ const FormBody = () => {
             <span className="text-xs ml-3">Use Secured Access Connection</span>
           </div>
           <div className="col-span-1 px-3 py-5 flex items-center content-around">
-            <input type="checkbox" />
+            <input
+              onClick={() => setIsUseAuthentication((prev) => !prev)}
+              checked={isUseAuthentication}
+              type="checkbox"
+            />
             <span className="text-xs ml-3">Use Authentication</span>
           </div>
           <div className="col-span-1 px-3 ml-5">
@@ -57,21 +93,31 @@ const FormBody = () => {
               Login
             </label>
             <input
-              placeholder="not required"
-              type="text"
+              placeholder={isUseAuthentication ? "required" : "not required"}
+              required={isUseAuthentication}
+              type="email"
               id="host"
-              className="border-b-2 w-full border-gray-400 bg-r bg-yellow-50"
+              className={
+                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                " " +
+                (theme === "dark" ? "bg-zinc-600" : "")
+              }
             />
           </div>
-          <div className="col-span-1 px-3 ml-5">
+          <div className="col-span-1 px-3 ml-5 lg:mt-8 myScreen:mt-0">
             <label for="host" className="text-gray-600">
               Password
             </label>
             <input
-              placeholder="not required"
-              type="text"
+              placeholder={isUseAuthentication ? "required" : "not required"}
+              required={isUseAuthentication}
+              type="password"
               id="host"
-              className="border-b-2 w-full border-gray-400 bg-r bg-yellow-50"
+              className={
+                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                " " +
+                (theme === "dark" ? "bg-zinc-600" : "")
+              }
             />
           </div>
           <div className="col-span-1 p-3">
@@ -80,9 +126,13 @@ const FormBody = () => {
             </label>
             <input
               placeholder="required"
-              type="text"
+              type="email"
               id="host"
-              className="border-b-2 w-full border-gray-400 bg-r bg-yellow-50"
+              className={
+                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                " " +
+                (theme === "dark" ? "bg-zinc-600" : "")
+              }
             />
           </div>
           <div className="col-span-1 p-3">
@@ -91,47 +141,72 @@ const FormBody = () => {
             </label>
             <input
               placeholder="required"
-              type="text"
+              type="email"
               id="host"
-              className="border-b-2 w-full border-gray-400 bg-r bg-yellow-50"
+              className={
+                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                " " +
+                (theme === "dark" ? "bg-zinc-600" : "")
+              }
             />
           </div>
         </div>
         <div className="hidden lg:block">
-          <p className="p-3 text-sm text-gray-400 mt-3">
+          <p
+            className={"p-3 text-sm text-gray-400 mt-3 lg:mt-6" + " " + (isMiniForm ? " " : "mt-9")}
+          >
             host or ip address of your smtp server (example:
             <span className="text-green-500">smtp.company.com</span>)
           </p>
-          <p className="p-3 text-sm text-gray-400 mt-3">
+          <p className={"p-3 text-sm text-gray-400 mt-3" + " " + (isMiniForm ? " " : "mt-8")}>
             the default port is <span className="text-green-500">25</span>, but some smtp servers
             use a custom port (example: <span className="text-green-500">587</span>)
           </p>
-          <p className="p-3 text-sm text-gray-400 -mt-2">
+          <p
+            className={
+              "p-3 text-sm text-gray-400 -mt-2 lg:-mt-4 myScreen:-mt-2" +
+              " " +
+              (isMiniForm ? " " : "-mt-4")
+            }
+          >
             checked it only if the smtp server needs a secured connection (
             <span className="text-green-500">ssl, tsl</span>)
           </p>
-          <p className="p-3 text-sm text-gray-400 -mt-2">
-            checked it only if the smtp server needs a secured connection (
-            <span className="text-green-500">ssl, tsl</span>)
+          <p
+            className={
+              "p-3 text-sm text-gray-400 -mt-2 lg:-mt-3 myScreen:-mt-2" +
+              " " +
+              (isMiniForm ? " " : "-mt-1")
+            }
+          >
+            Most of smtp servers need an authentication (
+            <span className="text-green-500"> login/password</span>
+            ). Check it if required
           </p>
-          <p className="p-3 text-gray-400">
-            required if 'Use authentication' is checked (ex:{" "}
+          <p
+            className={"p-3 text-gray-400 mt-3 myScreen:-mt-1" + " " + (isMiniForm ? " " : "mt-3")}
+          >
+            Required if 'Use authentication' is checked (ex:{" "}
             <span className="text-green-500">account</span> or{" "}
             <span className="text-green-500">account@foo.com</span>)
           </p>
-          <p className="p-3 text-gray-400">
-            required if 'Use authentication' is checked (ex:{" "}
-            <span className="text-green-500">account</span> or{" "}
-            <span className="text-green-500">account@foo.com</span>)
+          <p className={"p-3 text-gray-400 -mt-4" + " " + (isMiniForm ? " " : "mt-5")}>
+            Required if 'Use authentication' is checked
           </p>{" "}
-          <p className="p-3 text-gray-400">
-            required if 'Use authentication' is checked (ex:{" "}
-            <span className="text-green-500">account</span> or{" "}
+          <p
+            className={
+              "p-3 text-gray-400 mt-2 lg:mt-0 myScreen:mt-2" + " " + (isMiniForm ? " " : "mt-5")
+            }
+          >
+            The sender's email address (example:{" "}
             <span className="text-green-500">account@foo.com</span>)
-          </p>{" "}
-          <p className="p-3 text-gray-400">
-            required if 'Use authentication' is checked (ex:{" "}
-            <span className="text-green-500">account</span> or{" "}
+          </p>
+          <p
+            className={
+              "p-3 text-gray-400 mt-3 lg:mt-1 myScreen:mt-3" + " " + (isMiniForm ? " " : "mt-4")
+            }
+          >
+            very important : the test mail will be sent to this address (ex:{" "}
             <span className="text-green-500">account@foo.com</span>)
           </p>
         </div>
@@ -139,7 +214,7 @@ const FormBody = () => {
           <p>Test Your Mail Server</p>
         </div>
       </div>
-      <button className="absolute  bg-red-500 px-3 py-1 rounded-md bottom-5 right-5 flex items-center w-20 content-between text-white">
+      <button className="absolute  bg-red-500 px-3 py-1 lg:right-[450px] lg:bottom-[65px] myScreen:bottom-5 myScreen:right-5 rounded-md bottom-5 right-5 flex items-center w-20 content-between text-white">
         <FiSend className="mr-auto" />
         Send
       </button>

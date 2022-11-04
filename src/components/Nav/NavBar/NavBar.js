@@ -1,9 +1,7 @@
 import { FiFeather } from "react-icons/fi";
 import { AiOutlineLayout } from "react-icons/ai";
 import { IoInformationCircleOutline } from "react-icons/io5";
-
 import { FiZap } from "react-icons/fi";
-import { BsCheck2 } from "react-icons/bs";
 import { AiOutlineRight } from "react-icons/ai";
 import { RiErrorWarningLine } from "react-icons/ri";
 
@@ -16,7 +14,7 @@ const NavBar = () => {
   const dropDownContainer = [
     { icons: [<FiZap />], contents: ["Postman"] },
     {
-      icons: [<BsCheck2 />, <AiOutlineRight />, <AiOutlineRight />],
+      icons: [<AiOutlineRight />, <AiOutlineRight />, <AiOutlineRight />],
       contents: ["Auto", "Dark Mode", "Light Mode"],
     },
     {
@@ -25,7 +23,7 @@ const NavBar = () => {
     },
   ];
   return (
-    <div className={style.nanoMenu}>
+    <div onClick={(e) => e.stopPropagation()} className={style.nanoMenu}>
       <NavbarBrand p={"16px"} haveBackGround />
       <NavItem
         id={1}
@@ -36,13 +34,13 @@ const NavBar = () => {
       <NavItem
         id={2}
         dropDown={<NavDropDown dropDownItemList={dropDownContainer[1]} id={2} />}
-        content="More App"
+        content="Themes"
         first={<AiOutlineLayout />}
       />
       <NavItem
         id={3}
         dropDown={<NavDropDown dropDownItemList={dropDownContainer[2]} id={3} />}
-        content="More App"
+        content="About"
         first={<IoInformationCircleOutline />}
       />
     </div>

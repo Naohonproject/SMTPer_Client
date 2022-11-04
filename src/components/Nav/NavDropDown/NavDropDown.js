@@ -1,14 +1,31 @@
-import { useState, useContext } from "react";
-import { FiZap } from "react-icons/fi";
+import { useContext, useState } from "react";
+import { BsCheck2 } from "react-icons/bs";
 
 import style from "./style.module.css";
 import { NavBarContext } from "../../../context/NavBarContext";
+import { ThemeContext } from "../../../context/ThemeContext";
 
 const NavDropDown = ({ id, dropDownItemList }) => {
-  const { isDropdownHide, showItemId } = useContext(NavBarContext);
+  const { isDropdownHide, showItemId, setModalOpen } = useContext(NavBarContext);
+  const { setTheme, theme } = useContext(ThemeContext);
+
   const { icons, contents } = dropDownItemList;
-  console.log(icons);
-  console.log(contents);
+  const themeContent = contents.map((content) => content.toLowerCase());
+
+  const handleOnClick = (e) => {
+    const content = e.target.getAttribute("data-name");
+    if (content == "Dark Mode") {
+      setTheme("dark");
+    } else if (content === "Light Mode") {
+      setTheme("light");
+    } else if (content === "Auto") {
+      setTheme("auto");
+    } else if (content === "Disclaimer") {
+      setModalOpen("disclaimer");
+    } else {
+      setModalOpen("about");
+    }
+  };
 
   return (
     <div
@@ -23,6 +40,8 @@ const NavDropDown = ({ id, dropDownItemList }) => {
       {icons.map((icon, index) => {
         return (
           <div
+            data-name={contents[index]}
+            onClick={handleOnClick}
             style={{
               display: "flex",
               justifyContent: "start",
@@ -32,8 +51,8 @@ const NavDropDown = ({ id, dropDownItemList }) => {
             key={index}
             className="hover:opacity-50"
           >
-            {icon}{" "}
-            <span style={{ marginLeft: "6px" }}>
+            {themeContent[index].includes(theme) ? <BsCheck2 /> : icon}{" "}
+            <span data-name={contents[index]} onClick={handleOnClick} style={{ marginLeft: "6px" }}>
               {contents[index] === "Postman" ? (
                 <a href="https://www.postman.com/" target="_blank">
                   {contents[index]}

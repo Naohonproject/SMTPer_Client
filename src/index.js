@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import NavBarContextProvider from "./context/NavBarContext";
+import ThemeContextProvider from "./context/ThemeContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <NavBarContextProvider>
-      <App />
-    </NavBarContextProvider>
+    <ThemeContextProvider>
+      <NavBarContextProvider>
+        <App />
+      </NavBarContextProvider>
+    </ThemeContextProvider>
   </React.StrictMode>
 );
 

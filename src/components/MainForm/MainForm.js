@@ -4,14 +4,14 @@ import FormHeader from "./FormHeader/FormHeader";
 import FormBody from "./FormBody/FormBody";
 import { NavBarContext } from "../../context/NavBarContext";
 
-const MainFrom = () => {
+const MainForm = () => {
   const { isMainFormShow, isMiniForm } = useContext(NavBarContext);
   return (
     <div
       className={
         isMainFormShow
           ? isMiniForm
-            ? "w-full fixed z-[10001] top-[120px] shadow-sm -mt-[68px] sm:-mt-12 ease-in-out"
+            ? "w-full fixed z-[10001] top-[120px] lg:top-[100px]  myScreen:top-[120px] shadow-sm -mt-[68px] sm:-mt-12 ease-in-out"
             : "w-full fixed z-[10001] top-0 shadow-sm ease-in-out"
           : "hidden"
       }
@@ -30,4 +30,4 @@ const MainFrom = () => {
   );
 };
 
-export default MainFrom;
+export default MainForm;
