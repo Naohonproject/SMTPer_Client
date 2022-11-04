@@ -22,6 +22,18 @@
   z-index: 1000000;
   border-radius: 16px;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+  animation: dropdown ease-in-out 500ms;
+}
+
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modalHeader {

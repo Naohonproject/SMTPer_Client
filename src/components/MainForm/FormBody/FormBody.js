@@ -11,6 +11,12 @@ const FormBody = () => {
   const { isMiniForm } = useContext(NavBarContext);
   const { theme } = useContext(ThemeContext);
   const [isUseAuthentication, setIsUseAuthentication] = useState(false);
+  const [isExtendMenu, setIsExtendMenu] = useState(false);
+
+  const handleOnclick = () => {
+    setIsExtendMenu((prev) => !prev);
+  };
+
   return (
     <div
       className={
@@ -26,14 +32,43 @@ const FormBody = () => {
       >
         <div
           className={
-            "flex md:flex-row flex-col items-center justify-between md:justify-start h-20 md:h-10 p-1 md:p-3 md:bg-gray-700 text-white" +
+            "fixed z-[1000000] w-[220px] h-[570px] bg-trans md:hidden" +
+            " " +
+            (isExtendMenu ? "block" : "hidden")
+          }
+        >
+          {" "}
+          <div className="h-[40px] flex items-center">
+            <AiOutlineMenu onClick={handleOnclick} className="ml-auto mr-3 cursor-pointer" />
+          </div>
+          <div className="bg-slate-800  h-[42px] flex items-center content-between px-3 text-white ">
+            <p>Test & Check</p>
+            <FiSend className="ml-auto mr-1" />
+          </div>
+        </div>
+        <div
+          className={
+            "flex md:flex-row flex-col items-center justify-between md:justify-start h-20 md:h-10 pb-3 p-1 md:p-3  md:bg-gray-700 text-white" +
             " " +
             (theme === "dark" ? "!bg-zinc-800" : " ")
           }
         >
-          <AiOutlineMenu className="block md:hidden text-center h-10 text-gray-900" />
+          <AiOutlineMenu
+            onClick={handleOnclick}
+            className={
+              "md:hidden text-center h-10 text-white cursor-pointer hover:opacity-80" +
+              " " +
+              (isExtendMenu ? "hidden" : "block")
+            }
+          />
           <span className="hidden md:block">Test & Check</span>
-          <FiSend className="text-center md:ml-auto text-red-500 sm:text-white " />
+          <FiSend
+            className={
+              "text-center md:ml-auto text-white  sm:text-white hover:opacity-80 cursor-pointer" +
+              " " +
+              (isExtendMenu ? "hidden" : "block")
+            }
+          />
         </div>
       </div>
       <div
