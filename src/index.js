@@ -5,13 +5,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import NavBarContextProvider from "./context/NavBarContext";
 import ThemeContextProvider from "./context/ThemeContext";
+import FormContextProvider from "./context/FormContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ThemeContextProvider>
       <NavBarContextProvider>
-        <App />
+        <FormContextProvider>
+          <App />
+        </FormContextProvider>
       </NavBarContextProvider>
     </ThemeContextProvider>
   </React.StrictMode>

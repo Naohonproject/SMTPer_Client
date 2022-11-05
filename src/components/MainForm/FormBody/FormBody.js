@@ -4,14 +4,34 @@ import { useContext, useState } from "react";
 
 import { NavBarContext } from "../../../context/NavBarContext";
 import { ThemeContext } from "../../../context/ThemeContext";
+import { FormContext } from "../../../context/FormContext";
 
 import "./FormBody.css";
 
 const FormBody = () => {
   const { isMiniForm } = useContext(NavBarContext);
   const { theme } = useContext(ThemeContext);
+  const { postMail } = useContext(FormContext);
+
   const [isUseAuthentication, setIsUseAuthentication] = useState(false);
   const [isExtendMenu, setIsExtendMenu] = useState(false);
+  const [mailDetails, setMailDetails] = useState({
+    Host: "",
+    Port: 25,
+    Email: "",
+    Password: "",
+    From: "",
+    To: "",
+  });
+
+  // console.log(mailDetails);
+
+  const { Host, Port, Email, Password, From, To } = mailDetails;
+  const [isSecurity, setIsSecurity] = useState(true);
+
+  const handleOnChangeInput = (event) => {
+    setMailDetails({ ...mailDetails, [event.target.name]: event.target.value });
+  };
 
   const handleOnclick = () => {
     setIsExtendMenu((prev) => !prev);
@@ -84,6 +104,9 @@ const FormBody = () => {
               SMTP host
             </label>
             <input
+              onChange={handleOnChangeInput}
+              value={Host}
+              name="Host"
               placeholder="required"
               type="text"
               id="host"
@@ -96,23 +119,31 @@ const FormBody = () => {
             />
           </div>
           <div className="col-span-1 p-3">
-            <label for="host" className="text-gray-600">
+            <label for="host" className={theme === "dark" ? "text-white" : "text-gray-600"}>
               Port
             </label>
             <input
+              onChange={handleOnChangeInput}
+              value={Port}
+              name="Port"
               placeholder="required"
               type="text"
               id="host"
               className={
                 "border-b-2 w-full border-gray-400 bg-yellow-50" +
                 " " +
-                (theme === "dark" ? "bg-zinc-600" : "")
+                (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
               }
               required
             />
           </div>
           <div className="col-span-1 px-3 py-5 flex items-center content-around">
-            <input type="checkbox" />
+            <input
+              checked={isSecurity}
+              onClick={() => setIsSecurity((prev) => !prev)}
+              name="IsSecurity"
+              type="checkbox"
+            />
             <span className="text-xs ml-3">Use Secured Access Connection</span>
           </div>
           <div className="col-span-1 px-3 py-5 flex items-center content-around">
@@ -124,10 +155,13 @@ const FormBody = () => {
             <span className="text-xs ml-3">Use Authentication</span>
           </div>
           <div className="col-span-1 px-3 ml-5">
-            <label for="host" className="text-gray-600">
+            <label for="host" className={theme === "dark" ? "text-white" : "text-gray-600"}>
               Login
             </label>
             <input
+              onChange={handleOnChangeInput}
+              name=" Email"
+              value={Email}
               placeholder={isUseAuthentication ? "required" : "not required"}
               required={isUseAuthentication}
               type="email"
@@ -140,10 +174,13 @@ const FormBody = () => {
             />
           </div>
           <div className="col-span-1 px-3 ml-5 lg:mt-8 myScreen:mt-0">
-            <label for="host" className="text-gray-600">
+            <label for="host" className={theme === "dark" ? "text-white" : "text-gray-600"}>
               Password
             </label>
             <input
+              onChange={handleOnChangeInput}
+              name="Password"
+              value={Password}
               placeholder={isUseAuthentication ? "required" : "not required"}
               required={isUseAuthentication}
               type="password"
@@ -160,6 +197,9 @@ const FormBody = () => {
               <span className="text-yellow-400 text-[14px]">Email from</span>
             </label>
             <input
+              onChange={handleOnChangeInput}
+              name="From"
+              value={From}
               placeholder="required"
               type="email"
               id="host"
@@ -175,6 +215,9 @@ const FormBody = () => {
               <span className="text-yellow-400 text-[14px]">Email to</span>
             </label>
             <input
+              onChange={handleOnChangeInput}
+              name="To"
+              value={To}
               placeholder="required"
               type="email"
               id="host"
