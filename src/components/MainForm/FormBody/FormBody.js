@@ -65,13 +65,6 @@ const FormBody = () => {
   } else {
     mailerSender = { Host, Port, From, To };
   }
-  // validate form
-  console.log("port: " + isPortValid);
-  console.log("host: " + isHostValid);
-  console.log("from: " + isFromValid);
-  console.log("to: " + isToValid);
-  console.log(checkForm.current);
-  console.log("isFormValid: " + isFormValid);
 
   // validate fields after onchange event change the value of each field
   useEffect(() => {
@@ -175,6 +168,7 @@ const FormBody = () => {
   const handleSendMail = async (e) => {
     e.preventDefault();
     console.log("Send Mail");
+    console.log(mailerSender);
     // await postMail(mailerSender);
   };
 
@@ -259,7 +253,16 @@ const FormBody = () => {
                 }
                 required
               />
-              {formErrors.Host !== "" ? <p className="text-red-500">{formErrors.Host}</p> : " "}
+
+              <p
+                className={
+                  "text-red-500" +
+                  " " +
+                  (Host.length === 0 || formErrors.Host === "" ? "hidden" : " ")
+                }
+              >
+                {formErrors.Host}
+              </p>
             </div>
             <div className="col-span-1 p-3">
               <label htmlFor="Port" className={theme === "dark" ? "text-white" : "text-gray-600"}>
@@ -279,7 +282,15 @@ const FormBody = () => {
                 }
                 required
               />
-              {formErrors.Port !== "" ? <p className="text-red-500">{formErrors.Port}</p> : " "}
+              <p
+                className={
+                  "text-red-500" +
+                  " " +
+                  (Port.length === 0 || formErrors.Port === "" ? "hidden" : " ")
+                }
+              >
+                {formErrors.Port}
+              </p>
             </div>
             <div className="col-span-1 px-3 py-5 flex items-center content-around">
               <input
@@ -319,7 +330,15 @@ const FormBody = () => {
                   (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
                 }
               />
-              {formErrors.Email !== "" ? <p className="text-red-500">{formErrors.Email}</p> : " "}
+              <p
+                className={
+                  "text-red-500" +
+                  " " +
+                  (Email.length === 0 || formErrors.Email === "" ? "hidden" : " ")
+                }
+              >
+                {formErrors.Email}
+              </p>
             </div>
             <div className="col-span-1 px-3 ml-5 lg:mt-8 myScreen:mt-0">
               <label
@@ -342,11 +361,16 @@ const FormBody = () => {
                   (theme === "dark" ? "bg-zinc-600" : "")
                 }
               />
-              {formErrors.Password !== "" ? (
-                <p className="text-red-500">{formErrors.Password}</p>
-              ) : (
-                " "
-              )}
+
+              <p
+                className={
+                  "text-red-500" +
+                  " " +
+                  (Password.length === 0 || formErrors.Password === "" ? "hidden" : " ")
+                }
+              >
+                {formErrors.Password}
+              </p>
             </div>
             <div className="col-span-1 p-3">
               <label htmlFor="EmailFrom" className="text-gray-600">
@@ -365,7 +389,15 @@ const FormBody = () => {
                   (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
                 }
               />
-              {formErrors.From !== "" ? <p className="text-red-500">{formErrors.From}</p> : " "}
+              <p
+                className={
+                  "text-red-500" +
+                  " " +
+                  (From.length === 0 || formErrors.From === "" ? "hidden" : " ")
+                }
+              >
+                {formErrors.From}
+              </p>
             </div>
             <div className="col-span-1 p-3">
               <label htmlFor="EmailTo" className="text-gray-600">
@@ -384,10 +416,16 @@ const FormBody = () => {
                   (theme === "dark" ? "bg-zinc-600 ext-white" : "text-gray-500")
                 }
               />
-              {formErrors.To !== "" ? <p className="text-red-500">{formErrors.To}</p> : " "}
+              <p
+                className={
+                  "text-red-500" + " " + (To.length === 0 || formErrors.To === "" ? "hidden" : " ")
+                }
+              >
+                {formErrors.To}
+              </p>
             </div>
             <button
-              disabled={isFormValid}
+              disabled={!isFormValid}
               type="submit"
               className={
                 "absolute bg-red-500 px-3 py-1 lg:right-[450px] lg:bottom-[45px] myScreen:bottom-5 myScreen:right-5 rounded-md bottom-5 right-5 flex items-center w-20 content-between text-white hover:cursor-pointer" +
