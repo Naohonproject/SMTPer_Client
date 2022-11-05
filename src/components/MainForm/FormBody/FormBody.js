@@ -1,6 +1,6 @@
 import { FiSend } from "react-icons/fi";
 import { AiOutlineMenu } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 
 import { NavBarContext } from "../../../context/NavBarContext";
 import { ThemeContext } from "../../../context/ThemeContext";
@@ -9,12 +9,17 @@ import { FormContext } from "../../../context/FormContext";
 import "./FormBody.css";
 
 const FormBody = () => {
+  // contexts usage
   const { isMiniForm } = useContext(NavBarContext);
   const { theme } = useContext(ThemeContext);
   const { postMail } = useContext(FormContext);
 
+  // local states
+  // useAuthentication state
   const [isUseAuthentication, setIsUseAuthentication] = useState(false);
+  // extendMenu state
   const [isExtendMenu, setIsExtendMenu] = useState(false);
+  // mail details state
   const [mailDetails, setMailDetails] = useState({
     Host: "",
     Port: 25,
@@ -23,18 +28,154 @@ const FormBody = () => {
     From: "",
     To: "",
   });
+  // error states
+  const [formErrors, setFormError] = useState({
+    Host: null,
+    Port: null,
+    Email: null,
+    Password: null,
+    From: null,
+    To: null,
+  });
 
-  // console.log(mailDetails);
+  // states to validate the form
+  const [isHostValid, setIsHostValid] = useState(false);
+  const [isPortValid, setIsPortValid] = useState(true);
+  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isFromValid, setIsFromValid] = useState(false);
+  const [isToValid, setIsToValid] = useState(false);
 
+  // Form Valid state is true just all required input valid
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // destructuring,local variables
   const { Host, Port, Email, Password, From, To } = mailDetails;
   const [isSecurity, setIsSecurity] = useState(true);
+  let mailerSender;
 
-  const handleOnChangeInput = (event) => {
-    setMailDetails({ ...mailDetails, [event.target.name]: event.target.value });
+  // use useRef hook to store the fields and field value ref
+  const checkForm = useRef();
+  const fieldName = useRef();
+  const fieldValue = useRef();
+
+  // set up mailer information base authentication
+  if (isUseAuthentication) {
+    mailerSender = { ...mailDetails, IsSecurity: isSecurity };
+  } else {
+    mailerSender = { Host, Port, From, To };
+  }
+  // validate form
+  console.log("port: " + isPortValid);
+  console.log("host: " + isHostValid);
+  console.log("from: " + isFromValid);
+  console.log("to: " + isToValid);
+  console.log(checkForm.current);
+  console.log("isFormValid: " + isFormValid);
+
+  // validate fields after onchange event change the value of each field
+  useEffect(() => {
+    validateField(fieldName.current, fieldValue.current);
+  }, [Host, Port, Email, Password, From, To]);
+
+  // validate the form after validate the input fields
+  useEffect(() => {
+    validateForm();
+    setIsFormValid(checkForm.current);
+  }, [isHostValid, isEmailValid, isFromValid, isToValid, isPortValid, isPasswordValid]);
+
+  // validate the from against after the check authentication change
+  useEffect(() => {
+    validateForm();
+    setIsFormValid(checkForm.current);
+  }, [isUseAuthentication]);
+
+  // validate function definition
+  const validateForm = () => {
+    if (isUseAuthentication) {
+      checkForm.current =
+        isHostValid && isPortValid && isEmailValid && isPasswordValid && isFromValid && isToValid;
+    } else {
+      checkForm.current = isHostValid && isPortValid && isFromValid && isToValid;
+    }
   };
 
+  // validate fields
+  const validateField = (fieldName, value) => {
+    switch (fieldName) {
+      case "Host":
+        const checkHost = value.length > 0 && value.includes("smtp");
+        const hostErrorMessage = checkHost ? "" : "Invalid Host Format";
+        setIsHostValid(checkHost);
+        setFormError({ ...formErrors, Host: hostErrorMessage });
+        break;
+      case "Email":
+        if (isUseAuthentication) {
+          const checkEmail = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+          const mailErrorMessage = checkEmail ? "" : "inValid";
+          setIsEmailValid(Boolean(checkEmail));
+          setFormError((prev) => ({ ...prev, Email: mailErrorMessage }));
+          break;
+        } else {
+          setFormError((prev) => ({ ...prev, Email: "" }));
+          break;
+        }
+      case "Port":
+        const checkPort = Number.isInteger(Number(value));
+        const portErrorMessage = checkPort ? "" : "inValid";
+        setIsPortValid(checkPort);
+        setFormError((prev) => ({ ...prev, Port: portErrorMessage }));
+        break;
+      case "Password":
+        if (isUseAuthentication) {
+          const checkPassword = value.length > 8;
+          const passwordErrorMessage = checkPassword ? "" : "inValid";
+          setIsPasswordValid(checkPassword);
+          setFormError((prev) => ({ ...prev, Password: passwordErrorMessage }));
+          break;
+        } else {
+          setFormError((prev) => ({ ...prev, Password: "" }));
+          break;
+        }
+      case "From":
+        const checkEmailFrom = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        const mailFromErrorMessage = checkEmailFrom ? "" : "inValid";
+        setIsFromValid(Boolean(checkEmailFrom));
+        setFormError((prev) => ({ ...prev, From: mailFromErrorMessage }));
+        break;
+      case "To":
+        const checkEmailTo = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        const mailToErrorMessage = checkEmailTo ? "" : "inValid";
+        setIsToValid(Boolean(checkEmailTo));
+        setFormError((prev) => ({ ...prev, To: mailToErrorMessage }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  // handle onClick event of use Authentication checkbox
   const handleOnclick = () => {
     setIsExtendMenu((prev) => !prev);
+  };
+
+  // handle onChange input fields
+  const handleOnChangeInput = (event) => {
+    setMailDetails({ ...mailDetails, [event.target.name]: event.target.value });
+    fieldName.current = event.target.name;
+    fieldValue.current = event.target.value;
+  };
+
+  // handle onChange Authentication using cases to validate the form
+  const handleOnChangeAuthenticationCheckbox = (e) => {
+    setIsUseAuthentication((prev) => !prev);
+  };
+
+  // handle on Submit the form
+  const handleSendMail = async (e) => {
+    e.preventDefault();
+    console.log("Send Mail");
+    // await postMail(mailerSender);
   };
 
   return (
@@ -99,135 +240,165 @@ const FormBody = () => {
         }
       >
         <div>
-          <div className="col-span-1 p-3">
-            <label for="host" className="text-red-600">
-              SMTP host
-            </label>
-            <input
-              onChange={handleOnChangeInput}
-              value={Host}
-              name="Host"
-              placeholder="required"
-              type="text"
-              id="host"
+          <form onSubmit={handleSendMail}>
+            <div className="col-span-1 p-3">
+              <label htmlFor="Host" className="text-red-600">
+                SMTP host
+              </label>
+              <input
+                onChange={handleOnChangeInput}
+                value={Host}
+                name="Host"
+                placeholder="required"
+                type="text"
+                id="Host"
+                className={
+                  "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                  " " +
+                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                }
+                required
+              />
+              {formErrors.Host !== "" ? <p className="text-red-500">{formErrors.Host}</p> : " "}
+            </div>
+            <div className="col-span-1 p-3">
+              <label htmlFor="Port" className={theme === "dark" ? "text-white" : "text-gray-600"}>
+                Port
+              </label>
+              <input
+                onChange={handleOnChangeInput}
+                value={Port}
+                name="Port"
+                placeholder="required"
+                type="text"
+                id="Port"
+                className={
+                  "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                  " " +
+                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                }
+                required
+              />
+              {formErrors.Port !== "" ? <p className="text-red-500">{formErrors.Port}</p> : " "}
+            </div>
+            <div className="col-span-1 px-3 py-5 flex items-center content-around">
+              <input
+                checked={isSecurity}
+                onChange={() => setIsSecurity((prev) => !prev)}
+                name="IsSecurity"
+                type="checkbox"
+              />
+              <span className="text-xs ml-3">Use Secured Access Connection</span>
+            </div>
+            <div className="col-span-1 px-3 py-5 flex items-center content-around">
+              <input
+                onChange={handleOnChangeAuthenticationCheckbox}
+                checked={isUseAuthentication}
+                type="checkbox"
+              />
+              <span className="text-xs ml-3">Use Authentication</span>
+            </div>
+            <div className="col-span-1 px-3 ml-5">
+              <label
+                htmlFor="EmailLogin"
+                className={theme === "dark" ? "text-white" : "text-gray-600"}
+              >
+                Login
+              </label>
+              <input
+                onChange={handleOnChangeInput}
+                name="Email"
+                value={Email}
+                placeholder={isUseAuthentication ? "required" : "not required"}
+                required={isUseAuthentication}
+                type="email"
+                id="EmailLogin"
+                className={
+                  "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                  " " +
+                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                }
+              />
+              {formErrors.Email !== "" ? <p className="text-red-500">{formErrors.Email}</p> : " "}
+            </div>
+            <div className="col-span-1 px-3 ml-5 lg:mt-8 myScreen:mt-0">
+              <label
+                htmlFor="Password"
+                className={theme === "dark" ? "text-white" : "text-gray-600"}
+              >
+                Password
+              </label>
+              <input
+                onChange={handleOnChangeInput}
+                name="Password"
+                value={Password}
+                placeholder={isUseAuthentication ? "required" : "not required"}
+                required={isUseAuthentication}
+                type="password"
+                id="Password"
+                className={
+                  "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                  " " +
+                  (theme === "dark" ? "bg-zinc-600" : "")
+                }
+              />
+              {formErrors.Password !== "" ? (
+                <p className="text-red-500">{formErrors.Password}</p>
+              ) : (
+                " "
+              )}
+            </div>
+            <div className="col-span-1 p-3">
+              <label htmlFor="EmailFrom" className="text-gray-600">
+                <span className="text-yellow-400 text-[14px]">Email from</span>
+              </label>
+              <input
+                onChange={handleOnChangeInput}
+                name="From"
+                value={From}
+                placeholder="required"
+                type="email"
+                id="EmailFrom"
+                className={
+                  "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                  " " +
+                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                }
+              />
+              {formErrors.From !== "" ? <p className="text-red-500">{formErrors.From}</p> : " "}
+            </div>
+            <div className="col-span-1 p-3">
+              <label htmlFor="EmailTo" className="text-gray-600">
+                <span className="text-yellow-400 text-[14px]">Email to</span>
+              </label>
+              <input
+                onChange={handleOnChangeInput}
+                name="To"
+                value={To}
+                placeholder="required"
+                type="email"
+                id="EmailTo"
+                className={
+                  "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                  " " +
+                  (theme === "dark" ? "bg-zinc-600 ext-white" : "text-gray-500")
+                }
+              />
+              {formErrors.To !== "" ? <p className="text-red-500">{formErrors.To}</p> : " "}
+            </div>
+            <button
+              disabled={isFormValid}
+              type="submit"
               className={
-                "border-b-2 w-full border-gray-400 bg-yellow-50" +
+                "absolute bg-red-500 px-3 py-1 lg:right-[450px] lg:bottom-[45px] myScreen:bottom-5 myScreen:right-5 rounded-md bottom-5 right-5 flex items-center w-20 content-between text-white hover:cursor-pointer" +
                 " " +
-                (theme === "dark" ? "bg-zinc-600" : "")
+                (isFormValid ? " " : "opacity-50")
               }
-              required
-            />
-          </div>
-          <div className="col-span-1 p-3">
-            <label for="host" className={theme === "dark" ? "text-white" : "text-gray-600"}>
-              Port
-            </label>
-            <input
-              onChange={handleOnChangeInput}
-              value={Port}
-              name="Port"
-              placeholder="required"
-              type="text"
-              id="host"
-              className={
-                "border-b-2 w-full border-gray-400 bg-yellow-50" +
-                " " +
-                (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
-              }
-              required
-            />
-          </div>
-          <div className="col-span-1 px-3 py-5 flex items-center content-around">
-            <input
-              checked={isSecurity}
-              onClick={() => setIsSecurity((prev) => !prev)}
-              name="IsSecurity"
-              type="checkbox"
-            />
-            <span className="text-xs ml-3">Use Secured Access Connection</span>
-          </div>
-          <div className="col-span-1 px-3 py-5 flex items-center content-around">
-            <input
-              onClick={() => setIsUseAuthentication((prev) => !prev)}
-              checked={isUseAuthentication}
-              type="checkbox"
-            />
-            <span className="text-xs ml-3">Use Authentication</span>
-          </div>
-          <div className="col-span-1 px-3 ml-5">
-            <label for="host" className={theme === "dark" ? "text-white" : "text-gray-600"}>
-              Login
-            </label>
-            <input
-              onChange={handleOnChangeInput}
-              name=" Email"
-              value={Email}
-              placeholder={isUseAuthentication ? "required" : "not required"}
-              required={isUseAuthentication}
-              type="email"
-              id="host"
-              className={
-                "border-b-2 w-full border-gray-400 bg-yellow-50" +
-                " " +
-                (theme === "dark" ? "bg-zinc-600" : "")
-              }
-            />
-          </div>
-          <div className="col-span-1 px-3 ml-5 lg:mt-8 myScreen:mt-0">
-            <label for="host" className={theme === "dark" ? "text-white" : "text-gray-600"}>
-              Password
-            </label>
-            <input
-              onChange={handleOnChangeInput}
-              name="Password"
-              value={Password}
-              placeholder={isUseAuthentication ? "required" : "not required"}
-              required={isUseAuthentication}
-              type="password"
-              id="host"
-              className={
-                "border-b-2 w-full border-gray-400 bg-yellow-50" +
-                " " +
-                (theme === "dark" ? "bg-zinc-600" : "")
-              }
-            />
-          </div>
-          <div className="col-span-1 p-3">
-            <label for="host" className="text-gray-600">
-              <span className="text-yellow-400 text-[14px]">Email from</span>
-            </label>
-            <input
-              onChange={handleOnChangeInput}
-              name="From"
-              value={From}
-              placeholder="required"
-              type="email"
-              id="host"
-              className={
-                "border-b-2 w-full border-gray-400 bg-yellow-50" +
-                " " +
-                (theme === "dark" ? "bg-zinc-600" : "")
-              }
-            />
-          </div>
-          <div className="col-span-1 p-3">
-            <label for="host" className="text-gray-600">
-              <span className="text-yellow-400 text-[14px]">Email to</span>
-            </label>
-            <input
-              onChange={handleOnChangeInput}
-              name="To"
-              value={To}
-              placeholder="required"
-              type="email"
-              id="host"
-              className={
-                "border-b-2 w-full border-gray-400 bg-yellow-50" +
-                " " +
-                (theme === "dark" ? "bg-zinc-600" : "")
-              }
-            />
-          </div>
+            >
+              <FiSend className="mr-auto" />
+              Send
+            </button>
+          </form>
         </div>
         <div className="hidden lg:block">
           <p
@@ -292,10 +463,6 @@ const FormBody = () => {
           <p>Test Your Mail Server</p>
         </div>
       </div>
-      <button className="absolute  bg-red-500 px-3 py-1 lg:right-[450px] lg:bottom-[65px] myScreen:bottom-5 myScreen:right-5 rounded-md bottom-5 right-5 flex items-center w-20 content-between text-white">
-        <FiSend className="mr-auto" />
-        Send
-      </button>
     </div>
   );
 };
