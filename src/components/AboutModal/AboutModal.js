@@ -4,12 +4,21 @@ import { useContext } from "react";
 
 import styles from "./Modal.module.css";
 import { NavBarContext } from "../../context/NavBarContext";
+import { FormContext } from "../../context/FormContext";
+import { MESSAGE_SHOW_OFF } from "../../reducer/constant";
 
 const Modal = ({ headerContent, mainContent }) => {
   const { setModalOpen } = useContext(NavBarContext);
+  const { dispatch } = useContext(FormContext);
+  const handleOnclick = () => {
+    if (headerContent === "Message") {
+      dispatch({ type: MESSAGE_SHOW_OFF });
+    }
+    setModalOpen(null);
+  };
   return (
     <>
-      <div className={styles.darkBG} onClick={() => setModalOpen(null)} />
+      <div className={styles.darkBG} onClick={handleOnclick} />
       <div className={styles.centered}>
         <div
           className={
@@ -28,7 +37,7 @@ const Modal = ({ headerContent, mainContent }) => {
               </div>
             </div>
           </div>
-          <button className={styles.closeBtn} onClick={() => setModalOpen(null)}>
+          <button className={styles.closeBtn} onClick={handleOnclick}>
             <RiCloseLine style={{ marginBottom: "-3px" }} />
           </button>
           <div className={styles.modalContent + " " + "text-[16px] md:text-lg"}>{mainContent}</div>
@@ -37,7 +46,7 @@ const Modal = ({ headerContent, mainContent }) => {
               <p className="ml-5 text-black">
                 For more information, contact us at team (at) nanogenesis.xyz
               </p>
-              <button className={styles.cancelBtn} onClick={() => setModalOpen(null)}>
+              <button className={styles.cancelBtn} onClick={handleOnclick}>
                 Close
               </button>
             </div>

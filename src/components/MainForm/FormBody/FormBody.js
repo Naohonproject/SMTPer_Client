@@ -10,11 +10,15 @@ import "./FormBody.css";
 
 const FormBody = () => {
   // contexts usage
-  const { isMiniForm } = useContext(NavBarContext);
+  const { isMiniForm, setIsMainFormShow } = useContext(NavBarContext);
   const { theme } = useContext(ThemeContext);
-  const { postMail } = useContext(FormContext);
+  const {
+    postMail,
+    postState: { postLoading, isModalShow },
+  } = useContext(FormContext);
 
   // local states
+
   // useAuthentication state
   const [isUseAuthentication, setIsUseAuthentication] = useState(false);
   // extendMenu state
@@ -28,7 +32,7 @@ const FormBody = () => {
     From: "",
     To: "",
   });
-  // error states
+  // error state
   const [formErrors, setFormError] = useState({
     Host: null,
     Port: null,
@@ -167,9 +171,8 @@ const FormBody = () => {
   // handle on Submit the form
   const handleSendMail = async (e) => {
     e.preventDefault();
-    console.log("Send Mail");
-    console.log(mailerSender);
-    // await postMail(mailerSender);
+    await postMail(mailerSender);
+    setIsMainFormShow(false);
   };
 
   return (
@@ -413,7 +416,7 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600 ext-white" : "text-gray-500")
+                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
                 }
               />
               <p
@@ -425,12 +428,14 @@ const FormBody = () => {
               </p>
             </div>
             <button
-              disabled={!isFormValid}
+              // disable submit button when form validate fail or forms is transferring
+              disabled={!isFormValid || postLoading}
               type="submit"
               className={
                 "absolute bg-red-500 px-3 py-1 lg:right-[450px] lg:bottom-[45px] myScreen:bottom-5 myScreen:right-5 rounded-md bottom-5 right-5 flex items-center w-20 content-between text-white hover:cursor-pointer" +
                 " " +
-                (isFormValid ? " " : "opacity-50")
+                // button is disabled effect when form validate successfully and out of transferring time
+                (isFormValid && !postLoading ? " " : "opacity-50")
               }
             >
               <FiSend className="mr-auto" />
