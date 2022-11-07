@@ -21,7 +21,7 @@ const FormHeader = () => {
   return (
     <div
       className={
-        "bg-custom p-3 h-14 flex items-center" + " " + (theme === "dark" ? "!bg-zinc-600" : " ")
+        "bg-custom p-3 h-14 flex items-center" + " " + (theme === "dark" ? "!bg-[#303030]" : " ")
       }
     >
       <div className="flex content-between item-center w-full">

@@ -5,3 +5,9 @@
 .bg-trans {
   background: rgba(150, 150, 150, 0.5);
 }
+
+.bg-send {
+  background-image: url("../../../../public/paper-airplane.png");
+  background-repeat: no-repeat;
+  background-position: right bottom -50px;
+}

@@ -3,9 +3,12 @@ import { useContext } from "react";
 import FormHeader from "./FormHeader/FormHeader";
 import FormBody from "./FormBody/FormBody";
 import { NavBarContext } from "../../context/NavBarContext";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const MainForm = () => {
   const { isMainFormShow, isMiniForm } = useContext(NavBarContext);
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div
       className={

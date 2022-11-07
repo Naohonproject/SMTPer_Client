@@ -13,8 +13,9 @@ const Modal = ({ headerContent, mainContent }) => {
   const handleOnclick = () => {
     if (headerContent === "Message") {
       dispatch({ type: MESSAGE_SHOW_OFF });
+    } else {
+      setModalOpen(null);
     }
-    setModalOpen(null);
   };
   return (
     <>

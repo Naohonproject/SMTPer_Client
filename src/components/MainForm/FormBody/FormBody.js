@@ -185,7 +185,7 @@ const FormBody = () => {
     >
       <div
         className={
-          "md:col-span-1 col-span-1 bg-gray-300" + " " + (theme === "dark" ? "!bg-zinc-600" : " ")
+          "md:col-span-1 col-span-1 bg-gray-300" + " " + (theme === "dark" ? "!bg-[#303030]" : " ")
         }
       >
         <div
@@ -231,9 +231,9 @@ const FormBody = () => {
       </div>
       <div
         className={
-          "bg-yellow-50 p-3 col-span-11 md:col-span-3  grid grid-cols-1 lg:grid-cols-2 gap-1 border-t-2 border-l-2 border-l-gray-300 border-t-gray-300" +
+          "bg-yellow-50 p-3 col-span-11 md:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-1 border-t-2 border-l-2 border-l-gray-300 border-t-gray-300" +
           " " +
-          (theme === "dark" ? "!bg-zinc-600" : " ")
+          (theme === "dark" ? "!bg-[#303030]" : " ")
         }
       >
         <div>
@@ -252,7 +252,9 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                  (theme === "dark"
+                    ? "bg-[#303030] text-white placeholder:text-gray-400"
+                    : "text-gray-500")
                 }
                 required
               />
@@ -281,7 +283,9 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                  (theme === "dark"
+                    ? "bg-[#303030] text-white placeholder:text-gray-600"
+                    : "text-gray-500")
                 }
                 required
               />
@@ -302,7 +306,9 @@ const FormBody = () => {
                 name="IsSecurity"
                 type="checkbox"
               />
-              <span className="text-xs ml-3">Use Secured Access Connection</span>
+              <span className={"text-xs ml-3" + " " + (theme === "dark" ? "text-white" : "")}>
+                Use Secured Access Connection
+              </span>
             </div>
             <div className="col-span-1 px-3 py-5 flex items-center content-around">
               <input
@@ -310,7 +316,9 @@ const FormBody = () => {
                 checked={isUseAuthentication}
                 type="checkbox"
               />
-              <span className="text-xs ml-3">Use Authentication</span>
+              <span className={"text-xs ml-3" + " " + (theme === "dark" ? "text-white" : "")}>
+                Use Authentication
+              </span>
             </div>
             <div className="col-span-1 px-3 ml-5">
               <label
@@ -330,7 +338,7 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                  (theme === "dark" ? "bg-[#303030] text-white" : "text-gray-500")
                 }
               />
               <p
@@ -361,7 +369,7 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600" : "")
+                  (theme === "dark" ? "bg-[#303030] text-white" : "")
                 }
               />
 
@@ -389,7 +397,7 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                  (theme === "dark" ? "bg-[#303030] text-white" : "text-gray-500")
                 }
               />
               <p
@@ -416,7 +424,7 @@ const FormBody = () => {
                 className={
                   "border-b-2 w-full border-gray-400 bg-yellow-50" +
                   " " +
-                  (theme === "dark" ? "bg-zinc-600 text-white" : "text-gray-500")
+                  (theme === "dark" ? "bg-[#303030] text-white" : "text-gray-500")
                 }
               />
               <p
@@ -502,7 +510,7 @@ const FormBody = () => {
             <span className="text-green-500">account@foo.com</span>)
           </p>
         </div>
-        <div className="text-gray-600 mx-3 my-1">
+        <div className={"text-gray-600 mx-3 my-1" + " " + (theme === "dark" ? "!text-white" : "")}>
           <p>Test Your Mail Server</p>
         </div>
       </div>
